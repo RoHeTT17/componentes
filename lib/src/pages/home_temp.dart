@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class HomePAgeTemp extends StatelessWidget {
+class HomePageTemp extends StatelessWidget {
 
   final opciones = ['1','2','3','cuatro','cinco','6','siete'];
 
