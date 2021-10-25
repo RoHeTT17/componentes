@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 //import 'package:componentes/src/pages/home_temp.dart';
 
 //import 'package:componentes/src/pages/home_page.dart';
@@ -15,6 +16,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', 'US'), // English, no country code
+        Locale('es', 'ES'), // Spanish, no country code
+      ],
+
       title: 'Componentes App',
       //home: HomePageTemp()
       //home: HomePage()

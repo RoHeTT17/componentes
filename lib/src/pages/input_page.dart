@@ -9,7 +9,12 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
 
 
-  String _nombre="",_email="";
+ String _nombre="",_email="",_fecha="";
+
+ TextEditingController _inputDateController = new TextEditingController();
+
+ List<String> _poderes = ['Volar','Rayos X',' Super Aliente','Super Fuerza'];
+ String _opcSelect="Volar"; 
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +31,13 @@ class _InputPageState extends State<InputPage> {
           Divider(),
           _crearPassword(),
           Divider(),
+          _crearFecha(context),
+          Divider(),
+          _crearDropDown(),
+          Divider(),
           _crearPersona(),
+          Divider(),
+        
         ],
         
       ),  
@@ -35,7 +46,7 @@ class _InputPageState extends State<InputPage> {
 
   Widget _crearInputs() {
     return TextField(
-      autofocus: true,
+      autofocus: false,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -110,4 +121,81 @@ class _InputPageState extends State<InputPage> {
     );
  }
 
+ Widget _crearFecha(BuildContext context){
+   return  TextField(
+    enableInteractiveSelection: false,
+    controller: _inputDateController,
+    decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  hintText: 'Fecha de nacimiento',
+                  labelText: 'Fecha de nacimiento',
+                  suffixIcon: Icon(Icons.calendar_today_sharp),
+                  icon: Icon(Icons.calendar_view_day)
+                ),
+    onTap:(){
+      //Quitar el Focus (no permite escribir sobre el textfield)
+      FocusScope.of(context).requestFocus(new FocusNode());
+      _selectDate(context);
+     } ,
+ );
+}
+
+  _selectDate(BuildContext context) async{
+
+   DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: new DateTime.now(),
+    firstDate: new DateTime(2018),
+    lastDate: new DateTime(2025),
+    locale: Locale("es","ES")
+  );  
+
+  if(picked!=null){
+    setState(() {
+        _fecha = picked.toString();
+        _inputDateController.text = _fecha;
+    });
+  }
+
+  }
+
+  List<DropdownMenuItem<String>> getOpcionesCombo(){
+    
+    List<DropdownMenuItem<String>> opciones = [];
+
+    _poderes.forEach((item) {
+        opciones.add(DropdownMenuItem(
+          child: Text(item),
+          value: item,
+        ));
+    });  
+
+    return opciones;
+
+  }
+
+  Widget _crearDropDown() {
+
+      return Row(
+        children: <Widget>[
+          Icon(Icons.select_all),
+          SizedBox(width: 30.0,),
+          Expanded(
+            child: DropdownButton(
+                      value: _opcSelect,
+                      items: getOpcionesCombo(),
+                      onChanged: (selected){
+                        setState(() {
+                          _opcSelect = selected.toString();
+                        });
+                      },
+            ),
+          )
+        ],
+
+      );
+
+  }
 }
